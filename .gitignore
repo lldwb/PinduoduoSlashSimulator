@@ -4,14 +4,4 @@
 
 # IntelliJ project files
 .idea
-*.iml
 target
-out
-gen
-src/main/resources/
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
-.DS_Store
