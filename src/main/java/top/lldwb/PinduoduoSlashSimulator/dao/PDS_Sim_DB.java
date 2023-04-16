@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author 安然的尾巴
@@ -21,15 +22,15 @@ public class PDS_Sim_DB {
     private static final String PASSWORD = "@dwb123456";
     //QueryRunner对象
     QueryRunner queryRunner = new QueryRunner();
-    //数据库连接对象
+    //数据库连接对象并传入数据库参数
     Connection conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
 
     public PDS_Sim_DB() throws SQLException {
     }
 
-    public <T> List<T> pdsList(T t, String sql, Object... obj) throws SQLException {
-        List<T> list = queryRunner.query(conn,sql,new  BeanListHandler<T>((Class<? extends T>) t.getClass()),obj);
+    public <T> Stream<T> pdsList(T t, String sql, Object... obj) throws SQLException {
+        Stream<T> stream = queryRunner.query(conn,sql,new  BeanListHandler<T>((Class<? extends T>) t.getClass()),obj).stream();
         DbUtils.close(conn);
-        return list;
+        return stream;
     }
 }
