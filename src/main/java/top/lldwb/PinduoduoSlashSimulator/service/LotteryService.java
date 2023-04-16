@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,15 +39,17 @@ public class LotteryService {
         // 从prize表中获取奖品列表，存储在list集合中
         List<Prize> list = new PDS_Sim_DB().pdsList(new Prize(), "select * from prize");
 
+        Predicate<Prize> predicate = prize -> grouping == 0 ? true : prize.getGrouping() == grouping;
+
         // 通过Stream随机读取一个奖品
         // optional对象表示获取的奖品，若返回为空则返回Optional.empty()
         // 首先list集合转成Stream流
         Optional<Prize> optional = list.stream()
                 // 判断是否是指定分组，当grouping为0是不分组
-                .filter(prize -> grouping == 0 ? true : prize.getGrouping() == grouping)
+                .filter(predicate)
                 // 使用skip跳过随机数量的元素
                 .skip(new Random()
-                        .nextInt((int) list.stream().filter(prize -> grouping == 0 ? true : prize.getGrouping() == grouping).count()))
+                        .nextInt((int) list.stream().filter(predicate).count()))
                 // 再使用findFirst方法获取第一个元素
                 .findFirst();
 
