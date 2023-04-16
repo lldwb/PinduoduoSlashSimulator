@@ -28,9 +28,18 @@ public class PDS_Sim_DB {
     public PDS_Sim_DB() throws SQLException {
     }
 
-    public <T> Stream<T> pdsList(T t, String sql, Object... obj) throws SQLException {
-        Stream<T> stream = queryRunner.query(conn,sql,new  BeanListHandler<T>((Class<? extends T>) t.getClass()),obj).stream();
+    /**
+     从数据库中查询符合条件的记录，并将结果封装为指定类型的List对象
+     @param t 用于封装结果的Java对象
+     @param sql SQL语句
+     @param obj SQL语句中的参数列表
+     @param <T> Java类型
+     @return 返回符合条件的记录封装为的List对象
+     @throws SQLException
+     */
+    public <T> List<T> pdsList(T t, String sql, Object... obj) throws SQLException {
+        List<T> list = queryRunner.query(conn,sql,new  BeanListHandler<T>((Class<? extends T>) t.getClass()),obj);
         DbUtils.close(conn);
-        return stream;
+        return list;
     }
 }
