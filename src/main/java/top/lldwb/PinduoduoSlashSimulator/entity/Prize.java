@@ -1,7 +1,10 @@
 package top.lldwb.PinduoduoSlashSimulator.entity;
 
 /**
- * 奖品实体类
+ * Prize实体类，代表一个奖品
+ * id: 奖品ID
+ * name: 奖品名称
+ * grouping: 奖品分组，用于区分不同的奖品类型
  */
 public class Prize {
     private int id;
